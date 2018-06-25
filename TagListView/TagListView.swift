@@ -283,6 +283,29 @@ open class TagListView: UIView {
         invalidateIntrinsicContentSize()
     }
     
+    open func calculateRowNumber(width: CGFloat) -> Int {
+        let views = tagViews as [UIView] + tagBackgroundViews + rowViews
+        var currentRow = 0
+        var currentRowTagCount = 0
+        var currentRowWidth: CGFloat = 0
+        for (index, tagView) in tagViews.enumerated() {
+            tagView.frame.size = tagView.intrinsicContentSize
+            
+            if currentRowTagCount == 0 || currentRowWidth + tagView.frame.width > width {
+                currentRow += 1
+                currentRowWidth = 0
+                currentRowTagCount = 0
+                tagView.frame.size.width = min(tagView.frame.size.width, width)
+            }
+            
+            currentRowTagCount += 1
+            currentRowWidth += tagView.frame.width + marginX
+            
+        }
+        invalidateIntrinsicContentSize()
+        return currentRow
+    }
+    
     // MARK: - Manage tags
     
     override open var intrinsicContentSize: CGSize {
