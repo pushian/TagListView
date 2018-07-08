@@ -122,6 +122,12 @@ open class TagListView: UIView {
         }
     }
     
+    @IBInspectable open dynamic var fixedHeight: CGFloat = -1 {
+        didSet {
+            rearrangeViews()
+        }
+    }
+    
     @objc public enum Alignment: Int {
         case left
         case center
@@ -238,6 +244,10 @@ open class TagListView: UIView {
         var currentRowWidth: CGFloat = 0
         for (index, tagView) in tagViews.enumerated() {
             tagView.frame.size = tagView.intrinsicContentSize
+            tagView.frame.size.height = self.cornerRadius * 2
+            if fixedHeight > 0 {
+                tagView.frame.size.height = fixedHeight
+            }
             tagViewHeight = tagView.frame.height
             
             if currentRowTagCount == 0 || currentRowWidth + tagView.frame.width > frame.width {
