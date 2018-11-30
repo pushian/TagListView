@@ -152,6 +152,10 @@ open class TagView: UIButton {
     open var onTap: ((TagView) -> Void)?
     open var onLongPress: ((TagView) -> Void)?
     
+    var gradient = CAGradientLayer()
+    fileprivate var startColor = UIColor.white
+    fileprivate var endColor = UIColor.white
+
     // MARK: - init
     
     required public init?(coder aDecoder: NSCoder) {
@@ -176,6 +180,8 @@ open class TagView: UIButton {
         
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(self.longPress))
         self.addGestureRecognizer(longPress)
+        
+        self.layer.insertSublayer(gradient, at: 0)
     }
     
     @objc func longPress() {
@@ -214,5 +220,27 @@ open class TagView: UIButton {
             removeButton.frame.size.height = self.frame.height
             removeButton.frame.origin.y = 0
         }
+    }
+    
+    override open func draw(_ rect: CGRect) {
+        // Drawing code
+        
+        // gradient colors in order which they will visually appear
+//        gradient.colors = [startColor.cgColor, endColor.cgColor]
+        gradient.colors = [startColor.cgColor, endColor.cgColor]
+        
+        // Gradient from left to right
+        gradient.startPoint = CGPoint(x: 0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+        
+        // set the gradient layer to the same size as the view
+        gradient.frame = self.bounds
+        
+    }
+    
+    open func updateColor(startColor: UIColor, endColor: UIColor) {
+        self.startColor = startColor
+        self.endColor = endColor
+        self.setNeedsDisplay()
     }
 }
