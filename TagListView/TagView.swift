@@ -153,8 +153,8 @@ open class TagView: UIButton {
     open var onLongPress: ((TagView) -> Void)?
     
     var gradient = CAGradientLayer()
-    fileprivate var startColor = UIColor.white
-    fileprivate var endColor = UIColor.white
+    fileprivate var startColor = UIColor.clear
+    fileprivate var endColor = UIColor.clear
 
     // MARK: - init
     
